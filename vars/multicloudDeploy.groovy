@@ -116,7 +116,7 @@ void call(parameters = [:]) {
                     if (runInIsolatedWorkspace) {
                         deploymentUtils.unstashStageFiles(script, stageName)
                     }
-                    
+
                     if (config.preDeploymentHook) {
                         config.preDeploymentHook.call()
                     }
