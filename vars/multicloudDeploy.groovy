@@ -39,7 +39,8 @@ import static com.sap.piper.Prerequisites.checkScript
 
 @Field Set PARAMETER_KEYS = STEP_CONFIG_KEYS.plus([
     /** The source file to deploy to SAP Cloud Platform.*/
-    'source'
+    'source',
+    'preDeploymentHook'
 ])
 
 @Field Map CONFIG_KEY_COMPATIBILITY = [parallelExecution: 'features/parallelTestExecution']
@@ -114,6 +115,10 @@ void call(parameters = [:]) {
                     Utils deploymentUtils = new Utils()
                     if (runInIsolatedWorkspace) {
                         deploymentUtils.unstashStageFiles(script, stageName)
+                    }
+                    
+                    if (config.preDeploymentHook) {
+                        config.preDeploymentHook.call()
                     }
 
                     cloudFoundryDeploy(
